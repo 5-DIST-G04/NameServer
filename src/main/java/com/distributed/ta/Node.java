@@ -4,6 +4,13 @@ public class Node {
     private String ipAddress;
     private String name;
 
+    public Node(){ }
+
+    public Node(String name, String ip){
+        this.ipAddress = ip;
+        this.name = name;
+    }
+
     public String getName() {
         return name;
     }

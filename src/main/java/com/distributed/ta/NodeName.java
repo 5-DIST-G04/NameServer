@@ -1,9 +1,6 @@
 package com.distributed.ta;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 
 /**
@@ -20,10 +17,21 @@ public class NodeName {
      */
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Node getIt(@QueryParam("name") String name) {
+    public Node getIp(@QueryParam("name") String name) {
         Node node = new Node();
         node.setName(name);
         NodeNameDatabase.getInstance().getNodeIp(node);
         return node;
     }
+
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.TEXT_PLAIN)
+    public String addNode(Node node){
+        if(node.getIpAddress() == null | node.getName() == null | node.getName().equals("") | node.getIpAddress().equals(""))
+            return "failed the received node object was incomplete";
+        NodeNameDatabase.getInstance().addNode(node);
+        return "the node has been added to the list of known nodes";
+    }
+
 }
