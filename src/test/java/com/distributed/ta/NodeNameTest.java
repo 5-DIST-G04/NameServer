@@ -11,7 +11,7 @@ import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 
-public class MyResourceTest {
+public class NodeNameTest {
 
     private HttpServer server;
     private WebTarget target;
@@ -42,7 +42,7 @@ public class MyResourceTest {
      */
     @Test
     public void testGetIt() {
-        String responseMsg = target.path("myresource").request().get(String.class);
-        assertEquals("Got it!", responseMsg);
+        Node responseMsg = target.path("NodeName").queryParam("name","node1").request().get(Node.class);
+        assertEquals("192.168.0.2", responseMsg.getIpAddress());
     }
 }
