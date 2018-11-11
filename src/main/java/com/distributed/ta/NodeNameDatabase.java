@@ -1,7 +1,6 @@
 package com.distributed.ta;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class NodeNameDatabase {
     private static NodeNameDatabase ourInstance = new NodeNameDatabase();
@@ -47,5 +46,30 @@ public class NodeNameDatabase {
         }
         node.setIpAddress(this.Map.get(node.getHash()));
         return 0;
+    }
+
+    public String getFileLocation(File file){
+        Set<Integer> nodes = this.Map.keySet();
+        int fileHash = file.getHash();
+//        System.out.println("begin");
+//        System.out.println(fileHash);
+        Object[] hashArray = nodes.toArray();
+        Arrays.sort(hashArray);
+        int index = hashArray.length -1;
+        for (int i = 0; i < hashArray.length; i++) {
+            Integer value = (Integer)hashArray[i];
+            int val = value.intValue();
+//            System.out.printf("%d:%d\n",i,val);
+            if(val > fileHash){
+                if(i != 0)
+                    index = i - 1;
+                break;
+            }
+        }
+
+//        System.out.printf("index:%d\n", index);
+
+        file.setIpAddress(this.Map.get(hashArray[index]));
+        return file.getIpAddress();
     }
 }
