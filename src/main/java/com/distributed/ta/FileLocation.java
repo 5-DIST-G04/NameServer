@@ -9,8 +9,9 @@ import javax.ws.rs.core.Response;
 public class FileLocation {
 
     @GET
+    @Path("/{fileName}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getIp(@QueryParam("fileName") String fileName) {
+    public Response getIp(@PathParam("fileName") String fileName) {
         File file = new File();
         file.setFileName(fileName);
         NodeNameDatabase.getInstance().getFileLocation(file);
