@@ -6,6 +6,7 @@ import org.glassfish.jersey.server.ResourceConfig;
 
 import java.io.IOException;
 import java.net.URI;
+import java.util.Scanner;
 
 /**
  * Main class.
@@ -13,7 +14,7 @@ import java.net.URI;
  */
 public class Main {
     // Base URI the Grizzly HTTP server will listen on
-    public static final String BASE_URI = "http://localhost:8080/";
+    public static String BASE_URI = "http://localhost:8080/";
 
     /**
      * Starts Grizzly HTTP server exposing JAX-RS resources defined in this application.
@@ -35,6 +36,9 @@ public class Main {
      * @throws IOException
      */
     public static void main(String[] args) throws IOException {
+        Scanner input = new Scanner(System.in);
+        System.out.println("Write down the ip address and port number to bind to as ip:port");
+        BASE_URI = "http://" + input.next() + "/";
         final HttpServer server = startServer();
         UDPMulticastClient receive = new UDPMulticastClient();
         receive.run();
