@@ -18,7 +18,7 @@ public class NodeNameTest {
     private HttpServer server;
     private WebTarget target;
 
-    /*@Before
+    @Before
     public void setUp() throws Exception {
         // start the server
         server = Main.startServer();
@@ -58,5 +58,5 @@ public class NodeNameTest {
                 MediaType.APPLICATION_JSON),String.class);
         assertEquals("the node has been added to the list of known nodes", responseString);
         responseString = target.path("NodeName/"+testnode.getName()).request(MediaType.TEXT_PLAIN).delete(String.class);
-    }*/
+    }
 }
