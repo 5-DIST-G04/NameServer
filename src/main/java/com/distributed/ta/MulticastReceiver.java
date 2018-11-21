@@ -3,6 +3,9 @@ package com.distributed.ta;
 import java.net.DatagramPacket;
 import java.net.InetAddress;
 import java.net.MulticastSocket;
+import java.util.StringTokenizer;
+
+import static com.distributed.ta.Main.nodes;
 
 public class MulticastReceiver extends Thread {
     protected MulticastSocket socket = null;
@@ -25,7 +28,14 @@ public class MulticastReceiver extends Thread {
             String received = new String(
                     packet.getData(), 0, packet.getLength());
             System.out.println("received: " + received);
-            System.out.println();
+            String naam = received.substring(0,received.indexOf(","));
+            String ip = received.substring(received.indexOf(",")+1);
+            System.out.println(naam);
+            System.out.println(ip);
+            Node node = new Node(naam,ip);
+            nodes.addNode(node);
+
+
             //functie
             if ("end".equals(received)) {
                 break;

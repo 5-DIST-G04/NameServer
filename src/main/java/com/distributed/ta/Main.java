@@ -15,7 +15,7 @@ import java.util.Scanner;
 public class Main {
     // Base URI the Grizzly HTTP server will listen on
     public static String BASE_URI = "http://localhost:8080/";
-
+    public static NodeName nodes = new NodeName();
     /**
      * Starts Grizzly HTTP server exposing JAX-RS resources defined in this application.
      * @return Grizzly HTTP server.
@@ -35,11 +35,13 @@ public class Main {
      * @param args
      * @throws IOException
      */
+    public static MulticastPublisher publish = new MulticastPublisher();
+
     public static void main(String[] args) throws IOException {
         Scanner input = new Scanner(System.in);
-        MulticastPublisher publish = new MulticastPublisher();
         MulticastReceiver receiver = new MulticastReceiver("224.0.0.251" , 3000);
         receiver.run();
+
         System.out.println("Write down the ip address and port number to bind to as ip:port");
         BASE_URI = "http://" + input.next() + "/";
 

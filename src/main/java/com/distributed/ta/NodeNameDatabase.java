@@ -3,6 +3,8 @@ package com.distributed.ta;
 import java.io.*;
 import java.util.*;
 
+import static com.distributed.ta.Main.publish;
+
 public class NodeNameDatabase {
     private static NodeNameDatabase ourInstance = new NodeNameDatabase();
 
@@ -20,7 +22,17 @@ public class NodeNameDatabase {
 
     public void addNode(Node node){
         this.Map.put(Math.abs(node.getName().hashCode()) % 32768, node.getIpAddress());
+        try {
+
+            publish.multicast(Map.toString());
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println(e);
+        }
+
+
         writeMapToDisk();
+
     }
 
     public String removeNode(Node node){
