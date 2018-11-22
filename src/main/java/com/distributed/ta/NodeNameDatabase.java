@@ -20,6 +20,10 @@ public class NodeNameDatabase {
         loadMapFromDisk();
     }
 
+    public int amountNodes(){
+        return Map.size();
+    }
+
     public void addNode(Node node){
         this.Map.put(Math.abs(node.getName().hashCode()) % 32768, node.getIpAddress());
         writeMapToDisk();
@@ -42,6 +46,26 @@ public class NodeNameDatabase {
         }
         node.setIpAddress(this.Map.get(node.getHash()));
         return 0;
+    }
+
+    public void calcNeigbours(Node node){
+        Iterator it = Map.entrySet().iterator();
+        int current = node.getHash();
+        int next = 32768;
+        int prev = 0;
+        //System.out.println("huidige=" + huidige);
+        while (it.hasNext()) {
+            Map.Entry pair = (Map.Entry)it.next();
+            if(current < (int)pair.getKey()  && (int)pair.getKey() < next){
+                next = (int)pair.getKey();
+            }
+            if(current > (int)pair.getKey()  && (int)pair.getKey() > prev){
+                prev = (int)pair.getKey();
+            }
+            // System.out.println(pair.getKey());
+            it.remove(); // avoids a ConcurrentModificationException
+        }
+
     }
 
     public boolean NodeExists(Node node){

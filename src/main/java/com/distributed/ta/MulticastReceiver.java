@@ -1,5 +1,13 @@
 package com.distributed.ta;
 
+import com.sun.imageio.plugins.common.SingleTileRenderedImage;
+
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.MediaType;
+import javax.xml.ws.Response;
 import java.net.DatagramPacket;
 import java.net.InetAddress;
 import java.net.MulticastSocket;
@@ -7,6 +15,7 @@ import java.util.StringTokenizer;
 
 
 public class MulticastReceiver extends Thread {
+    private volatile boolean running = true;
     protected MulticastSocket socket = null;
     protected byte[] buf = new byte[256];
     int port;
@@ -16,12 +25,19 @@ public class MulticastReceiver extends Thread {
         this.port = port;
         this.ip = ip;
     }
+
+    public void stopReceiver(){
+        running = false;
+        interrupt();
+    }
+
+    @Override
     public void run() {
         try{
         socket = new MulticastSocket(port);
         InetAddress group = InetAddress.getByName(ip);
         socket.joinGroup(group);
-        while (true) {
+        while (running) {
             DatagramPacket packet = new DatagramPacket(buf, buf.length);
             socket.receive(packet);
             String received = new String(
@@ -33,12 +49,12 @@ public class MulticastReceiver extends Thread {
             System.out.println(ip);
             Node node = new Node(naam,ip);
             NodeNameDatabase.getInstance().addNode(node);
+            Client c = ClientBuilder.newClient();
+            WebTarget target = c.target("http://"+node.getIpAddress()+":8080/");
+            Response response = target.path("Nodes").request(MediaType.TEXT_PLAIN).put(Entity.entity((String.valueOf(NodeNameDatabase.getInstance()
+                    .amountNodes())),MediaType.TEXT_PLAIN),Response.class);
+            System.out.println(response.toString());
 
-
-            //functie
-            if ("end".equals(received)) {
-                break;
-            }
         }
         socket.leaveGroup(group);
         socket.close();}catch (Exception e){

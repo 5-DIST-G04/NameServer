@@ -21,6 +21,14 @@ public class NodeName {
         return Response.status(200).entity(node).build();
     }
 
+    @GET
+    @Path("/{name}/neighbours")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getNeigbours(@PathParam("name") String name){
+        NodeNameDatabase db = NodeNameDatabase.getInstance();
+        db.calcNeigbours();
+    }
+
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.TEXT_PLAIN)
@@ -44,5 +52,7 @@ public class NodeName {
         }
         return Response.status(204).build();
     }
+
+
 
 }
