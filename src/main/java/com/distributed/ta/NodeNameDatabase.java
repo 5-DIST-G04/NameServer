@@ -22,15 +22,6 @@ public class NodeNameDatabase {
 
     public void addNode(Node node){
         this.Map.put(Math.abs(node.getName().hashCode()) % 32768, node.getIpAddress());
-        try {
-
-            publish.multicast(Map.toString());
-        } catch (IOException e) {
-            e.printStackTrace();
-            System.out.println(e);
-        }
-
-
         writeMapToDisk();
 
     }

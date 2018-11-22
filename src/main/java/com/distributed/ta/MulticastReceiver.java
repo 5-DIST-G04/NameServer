@@ -5,7 +5,6 @@ import java.net.InetAddress;
 import java.net.MulticastSocket;
 import java.util.StringTokenizer;
 
-import static com.distributed.ta.Main.nodes;
 
 public class MulticastReceiver extends Thread {
     protected MulticastSocket socket = null;
@@ -33,7 +32,7 @@ public class MulticastReceiver extends Thread {
             System.out.println(naam);
             System.out.println(ip);
             Node node = new Node(naam,ip);
-            nodes.addNode(node);
+            NodeNameDatabase.getInstance().addNode(node);
 
 
             //functie
