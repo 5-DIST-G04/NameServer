@@ -7,6 +7,7 @@ import java.util.StringTokenizer;
 
 
 public class MulticastReceiver extends Thread {
+    private volatile boolean running = true;
     protected MulticastSocket socket = null;
     protected byte[] buf = new byte[256];
     int port;
@@ -16,12 +17,19 @@ public class MulticastReceiver extends Thread {
         this.port = port;
         this.ip = ip;
     }
+
+    public void stopReceiver(){
+        running = false;
+        interrupt();
+    }
+
+    @Override
     public void run() {
         try{
         socket = new MulticastSocket(port);
         InetAddress group = InetAddress.getByName(ip);
         socket.joinGroup(group);
-        while (true) {
+        while (running) {
             DatagramPacket packet = new DatagramPacket(buf, buf.length);
             socket.receive(packet);
             String received = new String(
@@ -34,11 +42,6 @@ public class MulticastReceiver extends Thread {
             Node node = new Node(naam,ip);
             NodeNameDatabase.getInstance().addNode(node);
 
-
-            //functie
-            if ("end".equals(received)) {
-                break;
-            }
         }
         socket.leaveGroup(group);
         socket.close();}catch (Exception e){

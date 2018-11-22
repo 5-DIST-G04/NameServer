@@ -37,18 +37,22 @@ public class Main {
     public static MulticastPublisher publish = new MulticastPublisher();
 
     public static void main(String[] args) throws IOException {
-        Scanner input = new Scanner(System.in);
+        if (args.length > 0) {
+            BASE_URI = args[0];
+        }
+        //Scanner input = new Scanner(System.in);
         MulticastReceiver receiver = new MulticastReceiver("224.0.0.251" , 3000);
-        receiver.run();
+        receiver.start();
 
-        System.out.println("Write down the ip address and port number to bind to as ip:port");
-        BASE_URI = "http://" + input.next() + "/";
+//        System.out.println("Write down the ip address and port number to bind to as ip:port");
+//        BASE_URI = "http://" + input.next() + "/";
 
         final HttpServer server = startServer();
         System.out.println(String.format("Jersey app started with WADL available at "
                 + "%sapplication.wadl\nHit enter to stop it...", BASE_URI));
         System.in.read();
         server.stop();
+        receiver.stopReceiver();
     }
 }
 
