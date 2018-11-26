@@ -1,6 +1,7 @@
 package com.distributed.ta;
 
 import com.sun.imageio.plugins.common.SingleTileRenderedImage;
+import sun.jvm.hotspot.utilities.ObjectReader;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
@@ -49,12 +50,14 @@ public class MulticastReceiver extends Thread {
             System.out.println(ip);
             Node node = new Node(naam,ip);
             NodeNameDatabase.getInstance().addNode(node);
+            Object amountNodes = new Object(){
+                public int value = NodeNameDatabase.getInstance().amountNodes();
+            };
+
             Client c = ClientBuilder.newClient();
             WebTarget target = c.target("http://"+node.getIpAddress()+":8080/");
-            Response response = target.path("Nodes").request(MediaType.TEXT_PLAIN).put(Entity.entity((String.valueOf(NodeNameDatabase.getInstance()
-                    .amountNodes())),MediaType.TEXT_PLAIN),Response.class);
+            Response response = target.path("Nodes").request(MediaType.APPLICATION_JSON).put(Entity.entity(amountNodes,MediaType.APPLICATION_JSON),Response.class);
             System.out.println(response.toString());
-
         }
         socket.leaveGroup(group);
         socket.close();}catch (Exception e){

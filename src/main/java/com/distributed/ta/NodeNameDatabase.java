@@ -48,6 +48,12 @@ public class NodeNameDatabase {
         return 0;
     }
 
+    public Node getNodeByName(String name){
+        Node node =  new Node(name,"");
+        node.setIpAddress(Map.get(node.getHash()));
+        return node;
+    }
+
     public void calcNeigbours(Node node){
         Iterator it = Map.entrySet().iterator();
         int current = node.getHash();

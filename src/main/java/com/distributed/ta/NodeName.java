@@ -26,7 +26,9 @@ public class NodeName {
     @Produces(MediaType.APPLICATION_JSON)
     public Response getNeigbours(@PathParam("name") String name){
         NodeNameDatabase db = NodeNameDatabase.getInstance();
-        db.calcNeigbours();
+        Node node =  db.getNodeByName(name);
+        db.calcNeigbours(node);
+        return Response.status(200).entity(node).build();   //TODO: check whether node actually exists.
     }
 
     @POST
