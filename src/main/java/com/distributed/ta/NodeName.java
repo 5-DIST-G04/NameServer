@@ -1,9 +1,10 @@
 package com.distributed.ta;
 
+import com.distributed.common.Node;
+
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.security.PrivateKey;
 
 
 @Path("NodeName")

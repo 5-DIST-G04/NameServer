@@ -1,7 +1,6 @@
 package com.distributed.ta;
 
-import com.sun.imageio.plugins.common.SingleTileRenderedImage;
-import sun.jvm.hotspot.utilities.ObjectReader;
+import com.distributed.common.Node;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
@@ -12,7 +11,6 @@ import javax.xml.ws.Response;
 import java.net.DatagramPacket;
 import java.net.InetAddress;
 import java.net.MulticastSocket;
-import java.util.StringTokenizer;
 
 
 public class MulticastReceiver extends Thread {

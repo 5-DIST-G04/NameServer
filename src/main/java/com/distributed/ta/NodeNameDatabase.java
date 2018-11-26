@@ -1,9 +1,9 @@
 package com.distributed.ta;
 
+import com.distributed.common.Node;
+
 import java.io.*;
 import java.util.*;
-
-import static com.distributed.ta.Main.publish;
 
 public class NodeNameDatabase {
     private static NodeNameDatabase ourInstance = new NodeNameDatabase();
